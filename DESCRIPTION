@@ -1,0 +1,13 @@
+Package: BreakViz
+Type: Package
+Title: R Package Template
+Version: 0.1.0
+Author: Yin Yin
+Maintainer: Yin Yin <yin.yin@mail.utoronto.ca>
+Description: BreakViz is a R package for looking for breakpoint of chromosomal translocation. This tool is for MinION data.
+License: file LICENSE
+Encoding: UTF-8
+LazyData: true
+Suggests:
+    testthat
+RoxygenNote: 6.1.0
