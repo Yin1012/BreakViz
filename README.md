@@ -1,29 +1,29 @@
-# rpt
+# BreakViz
 
-## R Package Template
+The goal of BreakViz is to detect possible breakpoints' location in human whole genome sequencing data from MinION
 
-This is a template RStudio project for R packages, loosely based on Hadley Wickham's
+## Installation
 
-  [R Packages](http://r-pkgs.had.co.nz/) <http://r-pkgs.had.co.nz/>
-
------------------------------------------------
-
-Note: you can't push empty directories to your repository. Make sure youu keep
-at least one file in every directory that you want to keep during development.
- 
------------------------------------------------
-
-Some useful keyboard shortcuts for package authoring:
-
-* Build and Reload Package:  `Cmd + Shift + B`
-* Update Documentation:      `Cmd + Shift + D` or `devtools::document()`
-* Test Package:              `Cmd + Shift + T`
-* Check Package:             `Cmd + Shift + E` or `devtools::check()`
-
------------------------------------------------
+You can install BreakViz from github with:
 
 
-Load the package (outside of this project) with:
-    `devtools::install_github("<your user name>/<your package name>")`
+``` r
+# install.packages("devtools")
+devtools::install_github("Yin1012/BreakViz")
+```
 
+## Example
 
+This is a basic example which shows you how to solve a common problem:
+
+``` r
+## basic example code
+```
+library(devtools)
+source("https://bioconductor.org/biocLite.R")
+biocLite("rtracklayer")
+library(rtracklayer)
+devtools::load_all(".")
+
+bedFile <- import(system.file("extdata", "test_file_4.bed", package = "BreakViz"), format = "bed")
+searchPossiblePairs(bedFile1,1000, 100)

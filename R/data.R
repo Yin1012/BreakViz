@@ -11,8 +11,8 @@
 #' @source \url{https://example.com/docs/dummy_formats/}
 #' @examples
 #' \dontrun{
-#' system.file("data", "NOSUCH.maf", package="rpt")
-#' fPath <- system.file("data", "NOSUCH.maf", package="rpt")
+#' system.file('data', 'NOSUCH.maf', package='rpt')
+#' fPath <- system.file('data', 'NOSUCH.maf', package='rpt')
 #' myExample <- read.delim(fPath, stringsAsFactors = FALSE)
 #' }
 #' @docType data

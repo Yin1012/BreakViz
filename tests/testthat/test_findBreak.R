@@ -5,12 +5,13 @@ library(devtools)
 source("https://bioconductor.org/biocLite.R")
 biocLite("rtracklayer")
 library(rtracklayer)
+devtools::load_all(".")
 
 bedFile1 <- import(system.file("extdata", "test_file_1.bed", package = "BreakViz"), format = "bed")
 bedFile2 <- import(system.file("extdata", "test_file_2.bed", package = "BreakViz"), format = "bed")
 bedFile3 <- import(system.file("extdata", "test_file_3.bed", package = "BreakViz"), format = "bed")
 bedFile4 <- import(system.file("extdata", "test_file_4.bed", package = "BreakViz"), format = "bed")
-sizeFiltedBedFile2 <- import(system.file("extdata", "sizeFiltedBedFile2.bed", package = "BreakViz"), format = "bed")
+sizeFiltedBedFile2 <- readRDS(system.file("extdata", "sizeFiltedBedFile2.Rda", package = "BreakViz"))
 dupFiltedBedFile2 <- readRDS(system.file("extdata", "dupFiltedBedFile2.Rda", package = "BreakViz"))
 dupFiltedBedFile3 <- readRDS(system.file("extdata", "dupFiltedBedFile3.Rda", package = "BreakViz"))
 uniqFiltedBedFile2 <- readRDS(system.file("extdata", "uniqFiltedBedFile2.Rda", package = "BreakViz"))
@@ -23,8 +24,8 @@ test_that("There is no read met the size requirment", {
   })
 
 test_that("There are reads meet the size requirment", {
-  expected_qual(sizefilter(bedFile1,10), bedFile1)
-  expected_qual(sizefilter(bedFile2,10000), sizeFiltedBedFile2)
+  expect_equal(sizefilter(bedFile1,10), bedFile1)
+  expect_equal(sizefilter(bedFile2,1000), sizeFiltedBedFile2)
   })
 
 test_that("There is no read showing in two parts in chromosomes", {
@@ -33,7 +34,7 @@ test_that("There is no read showing in two parts in chromosomes", {
                  })
 
 test_that("There are reads showing in two parts in chromosomes", {
-  expected_equal(dupFileter(bedFile2), dupFiltedBedFile2)
+  expect_equal(dupFileter(bedFile2), dupFiltedBedFile2)
  })
 
 test_that("There is no read showing in two parts in uniqie chromosomes", {
@@ -41,25 +42,25 @@ test_that("There is no read showing in two parts in uniqie chromosomes", {
 })
 
 test_that("There are reads showing in two parts in uniqie chromosomes",{
-  expected_equal(combineSameRead(bedFile2, dupFiltedBedFile2), uniqFiltedBedFile2)
+  expect_equal(combineSameRead(bedFile2, dupFiltedBedFile2), uniqFiltedBedFile2)
 })
 
 test_that("There is no read pair met the min Distance requirment", {
-  expect_match(searchPossiblePairs(bedFile2, 1000, 100), "There i,s no read pair met the min Distance requirment")
+  expect_match(searchPossiblePairs(bedFile2, 1000, 100), "There is no read pair met the min Distance requirment")
 })
 
 test_that("There are read pairs met the min Distance requirment", {
-  expected_equal(searchPossiblePairs(bedFile4,1000, 100), disFiltedBedFile4)
+  expect_equal(searchPossiblePairs(bedFile4,1000, 100), disFiltedBedFile4)
 })
 # other helper functions
 
 test_that("There is no available geneannotation for the position", {
-  expected_equal(length(addGeneAnnotation("4", 10000, 4000, dataType = "hg38")), 0)
+  expect_equal(length(addGeneAnnotation("4", 10000, 4000, dataType = "hg38")), 0)
 })
 
-test_that("There are available geneannotations for the position")
-  expected_equal(addGeneAnnotation("1", 10000, 1400, dataType = "hg38"), "DDX11L1")
-
+test_that("There are available geneannotations for the position", {
+  expect_match(addGeneAnnotation("1", 10000, 2000, dataType = "hg38"), "DDX11L1")
+})
 
 # ==== BEGIN TEARDOWN AND RESTORE ==============================================
 # Remove every persitent construct that the test has created, except for
