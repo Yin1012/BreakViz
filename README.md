@@ -1,6 +1,6 @@
 # BreakViz
 
-The goal of BreakViz is to detect possible breakpoints' location in human whole genome sequencing data from MinION
+The goal of BreakViz is to detect possible breakpoints' location in human whole genome sequencing data from MinION and visualize them with by using heatmap.
 
 ## Installation
 
@@ -26,4 +26,4 @@ library(rtracklayer)
 devtools::load_all(".")
 
 bedFile <- import(system.file("extdata", "test_file_4.bed", package = "BreakViz"), format = "bed")
-searchPossiblePairs(bedFile1,1000, 100)
+searchPossiblePairs(bedFile,1000, 100)
