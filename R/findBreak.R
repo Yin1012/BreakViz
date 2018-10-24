@@ -34,7 +34,7 @@ dupFileter <- function(file) {
 combineSameRead <- function(bedfile, preFiltedRead) {
     # create a matrix to store read pair
     prePair <- matrix(NA, NROW(preFiltedRead), 8)
-    colnames(prePair) <- c("read_pair_num", "read_name", "read_part1_seqnames", "read_part1_start", 
+    colnames(prePair) <- c("read_pair_num", "read_name", "read_part1_seqnames", "read_part1_start",
         "read_part1_width", "read_part2_seqnames", "read_part2_start", "read_part2_width")
     # put two part of one read that have same name together
     n <- 1
@@ -64,46 +64,6 @@ combineSameRead <- function(bedfile, preFiltedRead) {
     return(prePair)
 }
 
-#'Sort reads parts according to their chromosome number
-#'
-#'@param lists A line including read part information of one read with chromosome number
-#'@return A line whose chromosome number has been ordered.
-sortChrom <- function(lists) {
-    listChrom <- matrix(NA, NROW(lists), 3)
-    n <- 1
-    # covert chrx and chr Y into number to compare
-    for (i in 1:NROW(lists)) {
-        item <- lists[i, ]
-        if (toString(item@seqnames) == "chrX") {
-            listChrom[n, 1] <- 22
-            listChrom[n, 2] <- "chrX"
-        } else if (toString(item@seqnames) == "chrY") {
-            listChrom[n, 1] <- 23
-            listChrom[n, 2] <- "chrY"
-        } else {
-            listChrom[n, 1] <- as.numeric(gsub("\\D", "", item@seqnames))
-            listChrom[n, 2] <- toString(item@seqnames)
-        }
-        listChrom[n, 3] <- n
-        n <- n + 1
-    }
-    sortedChrom <- as.matrix(listChrom[order(listChrom[, 1]), ])
-    return(sortedChrom)
-}
-
-#'Copy information from outFile to inFile
-#'
-#'@param inFile File we want to transfer into
-#'@param numRowInFile The number of rows in inFile we want to transfer information
-#'@param outFile File we want to transfer from
-#'@param numRowOutFile The number of rows in inFile we want to transfer information into
-copyInfo <- function(inFile, numRowInFile, outFile, numRowOutFile, numCol) {
-    
-    for (i in 2:numCol) {
-        
-        inFile[numRowInFile, i] <- outFile[numRowOutFile, i]
-    }
-}
 
 #'Check distance between each parts in one read pair if met the distance requirement
 #'
@@ -117,7 +77,7 @@ copyInfo <- function(inFile, numRowInFile, outFile, numRowOutFile, numCol) {
 #'@param read2part2Start The start position of part2 of read2
 #'@param read2part2SRange The range of part2 of read2
 #'@return The logical value showing if there is a read pair met distance requirment
-checkDistanceReadPair <- function(maxDistance, read1part1Start, read1part1Range, read1part2Start, read1part2Range, 
+checkDistanceReadPair <- function(maxDistance, read1part1Start, read1part1Range, read1part2Start, read1part2Range,
     read2part1Start, read2part1Range, read2part2Start, read2part2Range) {
     # Conver to numeric
     read1part1Start <- as.numeric(gsub("\\D", "", read1part1Start))
@@ -133,10 +93,10 @@ checkDistanceReadPair <- function(maxDistance, read1part1Start, read1part1Range,
     read1part2End <- read1part2Start + read1part2Range
     read2part1End <- read2part1Start + read2part1Range
     read2part2End <- read2part2Start + read2part2Range
-    
-    if (((read1part1Start - read2part1End < maxDistance && read1part1Start - read2part1End > 0) || (read2part1Start - 
-        read1part1End < maxDistance && read2part1Start - read1part1End > 0)) && ((read1part2Start - 
-        read2part2End < maxDistance && read1part2Start - read2part2End > 0) || (read2part2Start - read1part2End < 
+
+    if (((read1part1Start - read2part1End < maxDistance && read1part1Start - read2part1End > 0) || (read2part1Start -
+        read1part1End < maxDistance && read2part1Start - read1part1End > 0)) && ((read1part2Start -
+        read2part2End < maxDistance && read1part2Start - read2part2End > 0) || (read2part2Start - read1part2End <
         maxDistance && read2part2Start - read1part2End > 0))) {
         return(TRUE)
     }
@@ -166,7 +126,7 @@ searchPossiblePairs <- function(bedfile, minOverlap = 1000, maxDistance = 100) {
     }
     # select real pairs
     breakPair <- matrix(NA, 100, 9)
-    colnames(breakPair) <- c("read_pair_num", "read_name", "read_part1_seqnames", "read_part1_start", 
+    colnames(breakPair) <- c("read_pair_num", "read_name", "read_part1_seqnames", "read_part1_start",
         "read_part1_width", "read_part2_seqnames", "read_part2_start", "read_part2_width", "GeneAnnotation")
     numRow <- NROW(prePair)
     n <- 1
@@ -176,8 +136,8 @@ searchPossiblePairs <- function(bedfile, minOverlap = 1000, maxDistance = 100) {
             if (item != i && prePair[item, 6] == prePair[i, 6]) {
                 colPair <- 2 * n - 1
                 # check the distance between two parts of each read
-                if (checkDistanceReadPair(maxDistance, prePair[item, 4], prePair[item, 5], prePair[item, 
-                  7], prePair[item, 8], prePair[i, 4], prePair[i, 5], prePair[i, 7], prePair[i, 8]) == 
+                if (checkDistanceReadPair(maxDistance, prePair[item, 4], prePair[item, 5], prePair[item,
+                  7], prePair[item, 8], prePair[i, 4], prePair[i, 5], prePair[i, 7], prePair[i, 8]) ==
                   TRUE) {
                   for (m in 2:NCOL(prePair)) {
                     breakPair[colPair, m] <- prePair[item, m]
@@ -222,11 +182,11 @@ addGeneAnnotation <- function(readSeqnames, readStart, readWidth, dataType = "hg
     }
     readStart <- as.numeric(gsub("\\D", "", readStart))
     readWidth <- as.numeric(gsub("\\D", "", readWidth))
-    geneAnnotationLeft <- data[intersect(intersect(which(data$Start <= readStart), which(data$End >= 
+    geneAnnotationLeft <- data[intersect(intersect(which(data$Start <= readStart), which(data$End >=
         readStart)), which(data$Chromosome == readSeqnames)), 1]
-    geneAnnotationRight <- data[intersect(intersect(which(data$Start <= readStart + readWidth), which(data$End >= 
+    geneAnnotationRight <- data[intersect(intersect(which(data$Start <= readStart + readWidth), which(data$End >=
         readStart + readWidth)), which(data$Chromosome == readSeqnames)), 1]
-    geneAnnotationInside <- data[intersect(intersect(which(data$Start >= readStart), which(data$End <= 
+    geneAnnotationInside <- data[intersect(intersect(which(data$Start >= readStart), which(data$End <=
         readStart + readWidth)), which(data$Chromosome == readSeqnames)), 1]
     geneAnnotation <- union(union(geneAnnotationLeft, geneAnnotationRight), geneAnnotationInside)
     return(geneAnnotation)
@@ -241,7 +201,7 @@ getGeneAnnotation <- function(breakPair, dataType = "hg38") {
     for (i in 1:NROW(breakPair)) {
         numChr1 <- as.numeric(gsub("\\D", "", breakPair[i, 3]))
         numChr2 <- as.numeric(gsub("\\D", "", breakPair[i, 6]))
-        breakPair[i, 9] <- paste(union(addGeneAnnotation(numChr1, breakPair[i, 4], breakPair[i, 5], 
+        breakPair[i, 9] <- paste(union(addGeneAnnotation(numChr1, breakPair[i, 4], breakPair[i, 5],
             dataType), addGeneAnnotation(numChr2, breakPair[i, 7], breakPair[i, 8], dataType)), collapse = " ")
         return(breakPair)
     }

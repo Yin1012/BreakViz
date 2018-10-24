@@ -1,45 +1,13 @@
 standChr <- c(1:21, "X", "Y")
 
-#'Change format for visualization by chromoMap
-#'
-#'@param bedfile A bed file
-#'@param baseCol basecolour parameter
-#'@return A bed file filled with base col in each line
-changeFormatChromoMap <- function(bedfile, baseCol) {
-    newBedfile <- as.data.frame(matrix(NA, NROW(bedfile), 4))
-    colnames(newBedfile) <- c("name", "chrom", "start", "data")
-    newBedfile$start <- as.numeric(newBedfile$start)
-    newBedfile$data <- as.integer(newBedfile$data)
-    for (i in 1:NROW(bedfile)) {
-        newBedfile[i, 1] <- toString(bedfile[i, ]$name)
-        newBedfile[i, 2] <- toString(bedfile[i, ]@seqnames)
-        newBedfile[i, 3] <- bedfile[i, ]@ranges@start
-        newBedfile[i, 4] <- baseCol
-    }
-    return(newBedfile)
-}
 
-#'Add heat to the line we want
-#'
-#'@param formattedBedfile A bed file
-#'@param list A list included name of reads we want to add heat
-#'@param heatnumber number you want to added
-#'@return A bed file filled with base col in each line
-addHeat <- function(formattedBedfile, list, heatnumber) {
-    for (i in 1:NROW(list)) {
-        for (num in which(formattedBedfile[, 1] == list[i])) {
-            formattedBedfile[num, 4] <- as.numeric(formattedBedfile[num, 4]) + as.numeric(heatnumber)
-        }
-    }
-    
-    return(formattedBedfile)
-}
 #'Visualize possible pairs
 #'
 #'@param bedfile A bed file
 #'@param minOverlap A sizeOverlapping data
 #'@param maxDistance The distance requirment
 #'@param baseCol The base color
+#'@import chromoMap
 #'@return A list with possible read pairs
 visPossiblePair <- function(bedfile, minOverlap = 1000, maxDistance = 100, baseCol = 1) {
     # convert file format
@@ -54,7 +22,7 @@ visPossiblePair <- function(bedfile, minOverlap = 1000, maxDistance = 100, baseC
         return(dupFiltedList)
     }
     uniqfiltedList <- combineSameRead(bedfile, dupFiltedList)
-    if (identical(uniqfiltedList, "There is no read uniquely mapping into two parts in chromosomes") == 
+    if (identical(uniqfiltedList, "There is no read uniquely mapping into two parts in chromosomes") ==
         TRUE) {
         return(uniqfiltedList)
     }
@@ -70,6 +38,7 @@ visPossiblePair <- function(bedfile, minOverlap = 1000, maxDistance = 100, baseC
     chromoMap::chromoMap(newBedfile, type = "heatmap-single")
     # return (newBedfile)
 }
+
 
 visReads <- function(bedfile) {
     newBedfile <- changeFormatChromoMap(bedfile, baseCol)
@@ -90,14 +59,14 @@ showBreakPair <- function(prePairs, prePairsNum, read1Col, read2Col, figCols) {
         pair$Name[n] <- prePair[item, 2]
         pair$Start[n] <- as.integer(toString(prePairs[item, 4]))
         print(pair$Start[n])
-        pair$End[n] <- as.integer(toString(prePairs[item, 4])) + as.integer(toString(prePairs[item, 
+        pair$End[n] <- as.integer(toString(prePairs[item, 4])) + as.integer(toString(prePairs[item,
             5]))
         pair$Colors[n] <- read1Col
         pair$Chrom[n + 1] <- paste("chr", prePairs[item, 6], sep = "")
         pair$Name[n + 1] <- prePair[item, 2]
         pair$Start[n + 1] <- as.integer(toString(prePairs[item, 7]))
         print(pair$Start[n + 1])
-        pair$End[n + 1] <- as.integer(toString(prePairs[item, 7])) + as.integer(toString(prePairs[item, 
+        pair$End[n + 1] <- as.integer(toString(prePairs[item, 7])) + as.integer(toString(prePairs[item,
             8]))
         pair$Colors[n + 1] <- read2Col
         chr[1] <- prePairs[item, 3]
