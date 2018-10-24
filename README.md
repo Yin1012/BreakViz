@@ -17,8 +17,8 @@ devtools::install_github("Yin1012/BreakViz")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-## basic example code
-```
+
+
 library(devtools)
 source("https://bioconductor.org/biocLite.R")
 biocLite("rtracklayer")
@@ -27,3 +27,5 @@ devtools::load_all(".")
 
 bedFile <- import(system.file("extdata", "test_file_4.bed", package = "BreakViz"), format = "bed")
 searchPossiblePairs(bedFile,1000, 100)
+visPossiblePair(bedFile, minOverlap = 1000, maxDistance = 100, baseCol = 1)
+```
