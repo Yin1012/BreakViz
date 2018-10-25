@@ -11,7 +11,6 @@ sizefilter <- function(bedfile, minOverlap = 1000) {
     }
     return(SizeFilteredReads)
 }
-
 #'Selet reads that only mapping to two parts of chromosome
 #'
 #'@param bedfile A bed file after sizeFilter
