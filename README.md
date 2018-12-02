@@ -37,4 +37,4 @@ visPossiblePair(bedFile, minOverlap = 100, maxDistance = 1000, baseCol = 1)
 ```
 ## Sample output
 
-![alt text](http://steipe.biochemistry.utoronto.ca/abc/students/index.php/File:Result.PNG)
+![alt text](http://steipe.biochemistry.utoronto.ca/abc/students/images/b/b8/Result.PNG)
