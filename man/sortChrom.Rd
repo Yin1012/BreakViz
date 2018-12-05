@@ -15,3 +15,9 @@ A line whose chromosome number has been ordered.
 \description{
 Sort reads parts according to their chromosome number
 }
+\examples{
+bedFile2 <- rtracklayer::import(system.file('extdata', 'test_file_2.bed', package = 'BreakViz'), format = 'bed')
+dupFiltedBedFile2 <- readRDS(system.file('extdata', 'dupFiltedBedFile2.Rda', package = 'BreakViz'))
+lists <- bedFile2[which(bedFile2$name == dupFiltedBedFile2$Var1[1])]
+sortChrom(lists)
+}

@@ -34,6 +34,5 @@ The logical value showing if there is a read pair met distance requirment
 Check distance between each parts in one read pair if met the distance requirement
 }
 \examples{
-bedFile2 <- rtracklayer::import(system.file('extdata', 'test_file_2.bed', package = 'BreakViz'), format = 'bed')
-
+#'checkDistance(1000,1,10001,10005,300,2000,200,2230,500)
 }
