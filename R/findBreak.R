@@ -174,7 +174,7 @@ checkDistanceSingleReadPair <-
 #'checkDistanceAllReadPair(prePair, maxDistance)
 checkDistanceAllReadPair <- function(prePair, maxDistance) {
   #get number of row in prePair
-  numRow <- NROW(prePair)
+  #numRow <- NROW(prePair)
   # select real pairs
   breakPair <- matrix(NA, numRow, 9)
   colnames(breakPair) <-
@@ -191,44 +191,52 @@ checkDistanceAllReadPair <- function(prePair, maxDistance) {
     )
   n <- 1
   for (i in 1:numRow) {
+    #print (i)
     # check if there is breakpoint pair have same chromosome position
     for (item in which(prePair[, 3] == prePair[i, 3])) {
+      #print (item)
+      #calculate the number of breakpoints pair
       if (item != i && prePair[item, 6] == prePair[i, 6]) {
         colPair <- 2 * n - 1
-        # check the distance between two parts of each read
-        if (checkDistanceSingleReadPair(
-          maxDistance,
-          prePair[item, 4],
-          prePair[item, 5],
-          prePair[item,
-                  7],
-          prePair[item, 8],
-          prePair[i, 4],
-          prePair[i, 5],
-          prePair[i, 7],
-          prePair[i, 8]
-        ) == TRUE) {
-          #extract information of read part in prePair
-          for (m in 2:NCOL(prePair)) {
-            breakPair[colPair, m] <- prePair[item, m]
-          }
-          for (m in 2:NCOL(prePair)) {
-            breakPair[colPair + 1, m] <- prePair[i, m]
-          }
-          breakPair[colPair, 1] <- n
-          breakPair[colPair + 1, 1] <- n
-          n <- n + 1
+      } else{
+        colPair <- n
+      }
+      #print (colPair)
+      # check the distance between two parts of each read
+      if (checkDistanceSingleReadPair(
+        maxDistance,
+        prePair[item, 4],
+        prePair[item, 5],
+        prePair[item,
+                7],
+        prePair[item, 8],
+        prePair[i, 4],
+        prePair[i, 5],
+        prePair[i, 7],
+        prePair[i, 8]
+      ) == TRUE) {
+        #extract information of read part in prePair
+        for (m in 2:NCOL(prePair)) {
+          breakPair[colPair, m] <- prePair[item, m]
         }
+        for (m in 2:NCOL(prePair)) {
+          breakPair[colPair + 1, m] <- prePair[i, m]
+        }
+        breakPair[colPair, 1] <- n
+        breakPair[colPair + 1, 1] <- n
+        prePair[i,] <- NA
+        n <- n + 1
+
       }
     }
   }
-  #only leave useful information
-  breakPair <- breakPair[-c(n:100),]
-  #throw error if there is mo read pair meeting requirment
-  if (NROW(breakPair) == 0) {
-    stop("There is no read pair met the min Distance requirment")
-  }
-  return(breakPair)
+#only leave useful information
+#breakPair <- breakPair[-c(n:numRow),]
+#throw error if there is mo read pair meeting requirment
+if (NROW(breakPair) == 0) {
+  stop("There is no read pair met the min Distance requirment")
+}
+return(breakPair)
 }
 #'Sort reads parts according to their chromosome number
 #'
