@@ -21,7 +21,7 @@ A numeric vector.
 }
 \examples{
 plot(c(0.1,10), c(0,1))
-abline(v = lseq(0.1, 10, length.out = 20), col='#3366FF66')
+abline(v = lseq(0.1, 10, length.out = 20), col="#3366FF66")
 }
 \seealso{
 \code{\link{seq}}

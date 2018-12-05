@@ -2,16 +2,20 @@
 % Please edit documentation in R/findBreak.R
 \name{dupFileter}
 \alias{dupFileter}
-\title{Selet reads that only mapping to two parts of chromosome}
+\title{Select reads that only mapping to two parts of chromosome}
 \usage{
-dupFileter(file)
+dupFileter(bedFile)
 }
 \arguments{
-\item{bedfile}{A bed file after sizeFilter}
+\item{bedFile}{A bed file after sizeFilter}
 }
 \value{
 the list of read name that only mapping to two parts of chromosome
 }
 \description{
-Selet reads that only mapping to two parts of chromosome
+Select reads that only mapping to two parts of chromosome
+}
+\examples{
+bedFile1 <- rtracklayer::import(system.file('extdata', 'test_file_1.bed', package = 'BreakViz'))
+dupFileter(bedFile1)
 }

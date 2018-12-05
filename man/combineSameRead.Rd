@@ -4,10 +4,10 @@
 \alias{combineSameRead}
 \title{Combine reads that only mapping to two parts of chromosome and two parts are unique to each other}
 \usage{
-combineSameRead(bedfile, preFiltedRead)
+combineSameRead(bedFile, preFiltedRead)
 }
 \arguments{
-\item{bedfile}{A bed file after sizeFilter}
+\item{bedFile}{A bed file after sizeFilter}
 
 \item{preFiltedRead}{A file after sizeFilter and dupFilter}
 }
@@ -16,4 +16,9 @@ the list of read that only mapping to two parts of chromosome and their informat
 }
 \description{
 Combine reads that only mapping to two parts of chromosome and two parts are unique to each other
+}
+\examples{
+bedFile2 <- rtracklayer::import(system.file('extdata', 'test_file_2.bed', package = 'BreakViz'), format = 'bed')
+dupFiltedBedFile2 <- readRDS(system.file('extdata', 'dupFiltedBedFile2.Rda', package = 'BreakViz'))
+combineSameRead(bedFile2, dupFiltedBedFile2)
 }

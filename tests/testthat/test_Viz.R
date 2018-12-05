@@ -3,7 +3,6 @@ context("Viz")
 library(chromoMap)
 devtools::install_github("MangoTheCat/visualTest")
 library(visualTest)
-
 # ==== END SETUP AND PREPARE ========================================
 test_that("The possible pairs are identified by visualization reslult of heat map")
 

@@ -1,43 +1,60 @@
-standChr <- c(1:21, "X", "Y")
-
-
 #'Visualize possible pairs
 #'
-#'@param bedfile A bed file
-#'@param minOverlap A sizeOverlapping data
-#'@param maxDistance The distance requirment
-#'@param baseCol The base color
+#'@param bedfile A bed file that contains possible pairs for visualization.
+#'@param minOverlap  A length that a part of one read aligned to chromosomes
+#'@param maxDistance A distance that the parts of one pair between each other
 #'@import chromoMap
+#'@export
 #'@return A list with possible read pairs
-visPossiblePair <- function(bedfile, minOverlap = 1000, maxDistance = 100, baseCol = -10) {
+#'@examples
+#'bedFile <- import(system.file('extdata', 'test_file_4.bed', package = 'BreakViz'), format = 'bed')
+#'visPossiblePair(bedFile, minOverlap = 100, maxDistance = 1000, 1)
+visPossiblePair <-
+  function(bedfile,
+           minOverlap = 100,
+           maxDistance = 1000,
+           colorSet = 1) {
     # convert file format
-    newBedfile <- changeFormatChromoMap(bedfile, baseCol)
+    newBedfile <- changeFormatChromoMap(bedfile)
     # get four lists including reads after four filters
     sizeFiltedList <- sizefilter(bedfile, minOverlap)
-    if (identical(sizeFiltedList, "There is no reads met your minOVerlap requirment") == TRUE) {
-        return(sizeFiltedList)
-    }
     dupFiltedList <- dupFileter(sizeFiltedList)
-    if (identical(dupFiltedList, "There is no reads mapping into two parts in chromosomes") == TRUE) {
-        return(dupFiltedList)
-    }
     uniqfiltedList <- combineSameRead(bedfile, dupFiltedList)
-    if (identical(uniqfiltedList, "There is no read uniquely mapping into two parts in chromosomes") ==
-        TRUE) {
-        return(uniqfiltedList)
-    }
-    distanceFiltedList <- searchPossiblePairs(bedfile, minOverlap, maxDistance)
-    if (identical(distanceFiltedList, "There is no read pair met the min Distance requirment") == TRUE) {
-        return("There is no read pair met the min Distance requirment")
-    }
+    distanceFiltedList <-
+      checkDistanceAllReadPair(uniqfiltedList, maxDistance)
     # add heat number
     newBedfile <- addHeat(newBedfile, sizeFiltedList$name, 3)
     newBedfile <- addHeat(newBedfile, dupFiltedList$Var1, 3)
     newBedfile <- addHeat(newBedfile, uniqfiltedList[, 2], 5)
     newBedfile <- addHeat(newBedfile, distanceFiltedList[, 2], 15)
-    chromoMap::chromoMap(newBedfile, type = "heatmap-single", chCol = "#EDEDED", chBorder = "#EDEDED", HeatColRange = c("#A2D145", "#02C39A","#05668D"))
-    # return (newBedfile)
-}
-
-
-
+    # provide options for color set
+    if (colorSet == 1) {
+      # green/blue color set
+      chromoMap::chromoMap(
+        newBedfile,
+        type = "heatmap-single",
+        chCol = "#EDEDED",
+        chBorder = "#EDEDED",
+        HeatColRange = c("#A2D145", "#02C39A", "#05668D")
+      )
+    } else if (colorSet == 2) {
+      # red/yellow color set
+      chromoMap::chromoMap(
+        newBedfile,
+        type = "heatmap-single",
+        chCol = "#EDEDED",
+        chBorder = "#EDEDED",
+        HeatColRange = c("#FFD700", "#DC143C")
+      )
+    } else {
+      # yellow/blue color set
+      chromoMap::chromoMap(
+        newBedfile,
+        type = "heatmap-single",
+        chCol = "#EDEDED",
+        chBorder = "#EDEDED",
+        HeatColRange = c("#FFD700", "#1E90FF")
+      )
+    }
+    # provide list to be downloaded if needed
+  }

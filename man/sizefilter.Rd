@@ -2,18 +2,22 @@
 % Please edit documentation in R/findBreak.R
 \name{sizefilter}
 \alias{sizefilter}
-\title{Filt reads with size requirment}
+\title{Filter reads with size requirement}
 \usage{
-sizefilter(bedfile, minOverlap = 1000)
+sizefilter(bedFile, minOverlap = 1000)
 }
 \arguments{
-\item{bedfile}{A bed file}
+\item{bedFile}{A bed file}
 
-\item{minOverlap}{A sizeOverlapping data}
+\item{minOverlap}{A length that a part of one read aligned to chromosomes}
 }
 \value{
 the list of read parts met our size requirment.
 }
 \description{
-Filt reads with size requirment
+Filter reads with size requirement
+}
+\examples{
+bedFile1 <- rtracklayer::import(system.file('extdata', 'test_file_1.bed', package = 'BreakViz'))
+sizefilter(bedFile1,10)
 }

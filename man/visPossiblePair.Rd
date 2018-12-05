@@ -4,21 +4,23 @@
 \alias{visPossiblePair}
 \title{Visualize possible pairs}
 \usage{
-visPossiblePair(bedfile, minOverlap = 1000, maxDistance = 100,
-  baseCol = 1)
+visPossiblePair(bedfile, minOverlap = 100, maxDistance = 1000,
+  colorSet = 1)
 }
 \arguments{
-\item{bedfile}{A bed file}
+\item{bedfile}{A bed file that contains possible pairs for visualization.}
 
-\item{minOverlap}{A sizeOverlapping data}
+\item{minOverlap}{A length that a part of one read aligned to chromosomes}
 
-\item{maxDistance}{The distance requirment}
-
-\item{baseCol}{The base color}
+\item{maxDistance}{A distance that the parts of one pair between each other}
 }
 \value{
 A list with possible read pairs
 }
 \description{
 Visualize possible pairs
+}
+\examples{
+bedFile <- import(system.file('extdata', 'test_file_4.bed', package = 'BreakViz'), format = 'bed')
+visPossiblePair(bedFile, minOverlap = 100, maxDistance = 1000, 1)
 }
