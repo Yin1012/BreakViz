@@ -14,7 +14,6 @@ You can install BreakViz from github with:
 
 
 ``` r
-# install.packages("devtools")
 devtools::install_github("Yin1012/BreakViz")
 ```
 
@@ -24,16 +23,20 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 
-
+#prepare work
 library(devtools)
-source("https://bioconductor.org/biocLite.R")
-biocLite("rtracklayer")
+BiocManager::install("rtracklayer")
 library(rtracklayer)
 devtools::load_all(".")
 
+#import bedfile
 bedFile <- import(system.file("extdata", "test_file_4.bed", package = "BreakViz"), format = "bed")
-searchPossiblePairs(bedFile,100, 1000)
+
+#visualize the possible pairs
 visPossiblePair(bedFile, minOverlap = 100, maxDistance = 1000, baseCol = 1)
+
+#run shiny app
+runApp('R/BreakVizApp.R')
 ```
 ## Sample output
 
