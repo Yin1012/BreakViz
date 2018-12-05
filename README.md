@@ -3,7 +3,7 @@
 ## Overview
 The goal of BreakViz is to detect possible breakpoints' location in human whole genome sequencing data from MinION and visualize them with by using heatmap.
 
-After sequencing and mapping, human DNA will be transformed into a bed file.The bed format file will be used as import in my package. User must provides two filters about selecting breakpoints : Mindistance, Maxdistance. We will select possible breakpoints based on these two parameters and create a heat table for whole reads. The package will add heat to reads based on their status after filtering. After visulization, a heatmap version of chromosomes will be showed.
+After sequencing and mapping, human DNA will be transformed into a bed file.The bed format file will be used as import in my package. User must provides two filters about selecting breakpoints : MinOverlap, Maxdistance. We will select possible breakpoints based on these two parameters and create a heat table for whole reads. The package will add heat to reads based on their status after filtering. After visulization, a heatmap version of chromosomes will be showed.
 
 ## Dependencies
 chromoMap, shiny
