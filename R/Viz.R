@@ -18,7 +18,7 @@ visPossiblePair <-
     newBedfile <- changeFormatChromoMap(bedfile)
     # get four lists including reads after four filters
     sizeFiltedList <- sizefilter(bedfile, minOverlap)
-    dupFiltedList <- dupFileter(sizeFiltedList)
+    dupFiltedList <- dupFilter(sizeFiltedList)
     uniqfiltedList <- combineSameRead(bedfile, dupFiltedList)
     distanceFiltedList <-
       checkDistanceAllReadPair(uniqfiltedList, maxDistance)
