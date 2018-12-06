@@ -11,10 +11,13 @@ LazyData: true
 Suggests:
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    BiocCheck
 RoxygenNote: 6.1.1
 Imports:
     chromoMap,
     shiny,
-    BiocManager
+    BiocManager,
+    shinyalert,
+    shinythemes
 VignetteBuilder: knitr
